@@ -1,0 +1,129 @@
+// SPDX-License-Identifier: Unlicensed
+pragma solidity ^0.8.18;
+
+
+contract MyBank
+{
+    mapping(address=> uint ) private _balances;
+    address public owner;
+    event LogDepositeMade(address accountHoder, uint amount );
+
+    constructor () 
+     {
+         owner=msg.sender;
+         emit LogDepositeMade(msg.sender, 1000);
+     }
+
+        function deposite() public payable  returns (uint)
+        {
+
+        require ((_balances[msg.sender] + msg.value) >  _balances[msg.sender] && msg.sender!=address(0));
+        _balances[msg.sender] += msg.value;
+        emit LogDepositeMade(msg.sender , msg.value);
+        return _balances[msg.sender];
+        } 
+
+        function withdraw (uint withdrawAmount) public  returns (uint)
+        {
+
+                require (_balances[msg.sender] >= withdrawAmount);
+                require(msg.sender!=address(0));
+                require (_balances[msg.sender] > 0);
+                _balances[msg.sender]-= withdrawAmount;
+                address payable recipient = payable(msg.sender);
+                recipient.transfer(withdrawAmount);
+                emit LogDepositeMade(msg.sender , withdrawAmount);
+                return _balances[msg.sender];
+
+        }
+
+        function viewBalance() public view returns (uint)
+        {
+            return _balances[msg.sender];
+        }
+   
+}
+
+
+
+
+
+
+
+
+
+// STEPS TO ADD COIN---- CLICK ON ADD NETWORK MANUALLY 
+// SEARCH ADD MUMBAI MATIC TO METAMASK
+//MUMBAI MATIC FAUCET
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+This Solidity code defines a smart contract called MyBank that represents a simple banking system with functions to deposit, withdraw, and view account balances. I'll explain it line by line:
+
+// SPDX-License-Identifier: Unlicensed: This is a comment providing a license identifier for the contract. It indicates that the contract does not have a specific license associated with it.
+
+pragma solidity ^0.8.18;: This is a Solidity version pragma. It specifies that the code should be compiled with a Solidity compiler version greater than or equal to 0.8.18 but less than 0.9.0.
+
+contract MyBank: This declares the start of the MyBank contract.
+
+mapping(address => uint) private _balances;: This line declares a state variable _balances, which is a private mapping that associates Ethereum addresses with their respective account balances. It is used to store the balances of account holders privately.
+
+address public owner;: This declares a public state variable owner of type address, which will store the address of the owner of the contract.
+
+event LogDepositeMade(address accountHoder, uint amount);: This declares an event LogDepositeMade. Events are used to log information on the blockchain, and this event is used to log deposit actions, including the account holder's address and the deposited amount.
+
+constructor (): This is the constructor function, which is executed when the contract is deployed.
+
+owner=msg.sender;: It sets the owner variable to the address of the account that deploys the contract.
+emit LogDepositeMade(msg.sender, 1000);: It emits a LogDepositeMade event with the deployer's address and an initial deposit amount of 1000.
+function deposite() public payable returns (uint): This function is used to deposit funds into the contract.
+
+require ((_balances[msg.sender] + msg.value) > _balances[msg.sender] && msg.sender != address(0));: This line checks if the sum of the current balance and the value being sent is greater than the current balance and that the sender's address is not the zero address. If these conditions are not met, the function will revert.
+
+_balances[msg.sender] += msg.value;: This increases the balance of the sender by the value sent.
+
+emit LogDepositeMade(msg.sender, msg.value);: It emits a LogDepositeMade event to log the deposit made by the sender.
+
+return _balances[msg.sender];: It returns the updated balance of the sender.
+
+function withdraw(uint withdrawAmount) public returns (uint): This function is used to withdraw funds from the contract.
+
+require(_balances[msg.sender] >= withdrawAmount);: It checks if the sender's balance is greater than or equal to the withdrawal amount.
+
+require(msg.sender != address(0));: It checks that the sender's address is not the zero address.
+
+require(_balances[msg.sender] > 0);: It checks that the sender's balance is greater than zero.
+
+_balances[msg.sender] -= withdrawAmount;: This reduces the sender's balance by the withdrawal amount.
+
+address payable recipient = payable(msg.sender);: It converts the sender's address into a payable address, allowing the transfer of Ether.
+
+recipient.transfer(withdrawAmount);: This transfers the specified withdrawal amount to the sender's address.
+
+emit LogDepositeMade(msg.sender, withdrawAmount);: It emits a LogDepositeMade event to log the withdrawal made by the sender.
+
+return _balances[msg.sender];: It returns the updated balance of the sender.
+
+function viewBalance() public view returns (uint): This function allows an account holder to view their balance.
+It simply returns the balance of the sender, as it's a view function and doesn't modify the contract state.
+
+*/
+
+
+
+
+
